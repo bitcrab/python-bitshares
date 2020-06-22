@@ -622,3 +622,24 @@ class Asset(GrapheneAsset):
             }
         )
         return self.blockchain.finalizeOp(op, self["issuer"], "active", **kwargs)
+        def claim_market_fee(self, amount, **kwargs):
+        """
+        Claim market fee
+
+        :param float amount: Amount to claim
+        """
+
+        # append operation
+        op = operations.Asset_claim_fees(
+            **{
+                "fee": {"amount": 0, "asset_id": "1.3.0"},
+                "issuer": self["issuer"],
+                "amount_to_claim": {
+                    "amount": int(float(amount) * 10 ** self["precision"]),
+                    "asset_id": self["id"]
+                },
+                "extensions": [],
+            }
+        )
+
+        return self.blockchain.finalizeOp(op, self["issuer"], "active", **kwargs)
